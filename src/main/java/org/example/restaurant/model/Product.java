@@ -1,10 +1,21 @@
 package org.example.restaurant.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Setter
+@Getter
 public class Product {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
-    private String category;
     private double price;
+    @ManyToOne
+    @JoinColumn(name = "table_id")
+    private Table table;
 
 
 }
