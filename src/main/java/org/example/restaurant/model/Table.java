@@ -16,8 +16,8 @@ public class Table {
     private Long id;
     private int size;
     private int currently_at_the_table;
-    @OneToMany(mappedBy = "table", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> orderedProducts = new ArrayList<>();
+    @ElementCollection
+    private List<OrderedProduct> orderedProducts = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private TableState tableState;
 

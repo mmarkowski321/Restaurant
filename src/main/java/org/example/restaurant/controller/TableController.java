@@ -1,8 +1,7 @@
 package org.example.restaurant.controller;
 
-import org.example.restaurant.model.Product;
+import org.example.restaurant.model.OrderedProduct;
 import org.example.restaurant.model.Table;
-import org.example.restaurant.model.TableState;
 import org.example.restaurant.service.TableService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,46 +16,54 @@ public class TableController {
     public TableController(TableService tableService) {
         this.tableService = tableService;
     }
+
     @PostMapping
     public ResponseEntity<Table> createTable(@RequestBody Table table){
         return ResponseEntity.ok(tableService.createTable(table));
     }
-    @PostMapping
-    public ResponseEntity<Table> addProduct(@PathVariable Long tableId, @RequestBody Product product){
-        return ResponseEntity.ok(tableService.addProduct(tableId,product));
+
+    @PostMapping("/{id}/addProduct")
+    public ResponseEntity<Table> addProduct(@PathVariable Long id, @RequestBody OrderedProduct product){
+        return ResponseEntity.ok(tableService.addProduct(id, product));
     }
-    @PostMapping("/{id}")
-    public ResponseEntity<Table> deleteProduct(@PathVariable Long tableId, @RequestBody Product product){
-        return ResponseEntity.ok(tableService.deleteProduct(tableId,product));
+
+    @DeleteMapping("/{id}/deleteProduct")
+    public ResponseEntity<Table> deleteProduct(@PathVariable Long id, @RequestBody OrderedProduct product){
+        return ResponseEntity.ok(tableService.deleteProduct(id, product));
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Table> getTableById(@PathVariable Long tableId){
-        return ResponseEntity.ok(tableService.getTableById(tableId));
+    public ResponseEntity<Table> getTableById(@PathVariable Long id){
+        return ResponseEntity.ok(tableService.getTableById(id));
     }
+
     @GetMapping
-    public ResponseEntity<List<Table>> getallTables(){
+    public ResponseEntity<List<Table>> getAllTables(){
         return ResponseEntity.ok(tableService.getAllTables());
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<Table> updateSizeTable(@PathVariable Long tableId, int newSize){
-        return ResponseEntity.ok(tableService.updateSizeTable(tableId,newSize));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Table> updateCurrentSizeTable(@PathVariable Long tableId, int people){
-        return ResponseEntity.ok(tableService.updateCurrentSizeTable(tableId,people));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Table> updateTableState(@PathVariable Long tableId, String tableState){
-        return ResponseEntity.ok(tableService.updateTableState(tableId,tableState));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Table> closeTable(@PathVariable Long tableId){
-        return ResponseEntity.ok(tableService.closeTable(tableId));
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<Table> openTable(@PathVariable Long tableId){
-        return ResponseEntity.ok(tableService.openTable(tableId));
+
+    @PutMapping("/{id}/size")
+    public ResponseEntity<Table> updateSizeTable(@PathVariable Long id, @RequestParam int newSize){
+        return ResponseEntity.ok(tableService.updateSizeTable(id, newSize));
     }
 
+    @PutMapping("/{id}/currentSize")
+    public ResponseEntity<Table> updateCurrentSizeTable(@PathVariable Long id, @RequestParam int people){
+        return ResponseEntity.ok(tableService.updateCurrentSizeTable(id, people));
+    }
 
+    @PutMapping("/{id}/updateState")
+    public ResponseEntity<Table> updateTableState(@PathVariable Long id, @RequestParam String tableState){
+        return ResponseEntity.ok(tableService.updateTableState(id, tableState));
+    }
+
+    @PutMapping("/{id}/close")
+    public ResponseEntity<Table> closeTable(@PathVariable Long id){
+        return ResponseEntity.ok(tableService.closeTable(id));
+    }
+
+    @PutMapping("/{id}/open")
+    public ResponseEntity<Table> openTable(@PathVariable Long id){
+        return ResponseEntity.ok(tableService.openTable(id));
+    }
 }
