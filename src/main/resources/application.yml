@@ -3,13 +3,13 @@ spring:
     name: Restaurant
   datasource:
     url: jdbc:postgresql://localhost:5432/Restaurant
-    username: waiter
-    password: secure_password
+    username: postgres
+    password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
 server:
   port: 8081

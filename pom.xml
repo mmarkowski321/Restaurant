@@ -63,6 +63,12 @@
             <artifactId>postgresql</artifactId>
             <version>42.6.0</version> <!-- Sprawdź najnowszą wersję na Maven Central -->
         </dependency>
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
