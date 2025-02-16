@@ -22,5 +22,13 @@ public class RestaurantTable {
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private TableState tableState = TableState.FREE;
+
+    public RestaurantTable(Long id, int size, int currently_at_the_table, List<OrderedProduct> orderedProducts, TableState tableState) {
+        this.id = id;
+        this.size = size;
+        this.currently_at_the_table = currently_at_the_table;
+        this.orderedProducts = orderedProducts;
+        this.tableState = tableState;
+    }
 }
 
