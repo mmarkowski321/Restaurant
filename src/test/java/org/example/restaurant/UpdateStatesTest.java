@@ -1,6 +1,6 @@
 package org.example.restaurant;
 
-import org.example.restaurant.exceptions.IsNotPaid;
+import org.example.restaurant.exceptions.IsNotPaidException;
 import org.example.restaurant.model.*;
 import org.example.restaurant.repository.TableRepository;
 import org.example.restaurant.service.TableService;
@@ -31,21 +31,21 @@ class UpdateStatesTest {
 
     @Test
     void testClosingTableFromStateFREE() {
-        assertThrows(IsNotPaid.class, () -> tableService.closeTable(1L));
+        assertThrows(IsNotPaidException.class, () -> tableService.closeTable(1L));
     }
 
     @Test
     void testClosingTableFromStateTAKEN() {
         RestaurantTable table = tableService.getTableById(1L);
         tableService.updateTableState(table.getId(), "TAKEN");
-        assertThrows(IsNotPaid.class, () -> tableService.closeTable(1L));
+        assertThrows(IsNotPaidException.class, () -> tableService.closeTable(1L));
     }
 
     @Test
     void testClosingTableFromStateTAKEN_WITH_PRODUCTS() {
         RestaurantTable table = tableService.getTableById(1L);
         tableService.updateTableState(table.getId(), "TAKEN_WITH_PRODUCTS");
-        assertThrows(IsNotPaid.class, () -> tableService.closeTable(1L));
+        assertThrows(IsNotPaidException.class, () -> tableService.closeTable(1L));
     }
 
     @Test

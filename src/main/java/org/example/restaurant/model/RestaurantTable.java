@@ -16,17 +16,20 @@ public class RestaurantTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int size;
-    private int currently_at_the_table;
+    private int currentlyAtTheTable;
     @ElementCollection
     @CollectionTable(name = "ordered_products", joinColumns = @JoinColumn(name = "table_id"))
     private List<OrderedProduct> orderedProducts = new ArrayList<>();
     @Enumerated(EnumType.STRING)
     private TableState tableState = TableState.FREE;
 
-    public RestaurantTable(Long id, int size, int currently_at_the_table, List<OrderedProduct> orderedProducts, TableState tableState) {
+    public RestaurantTable() {
+    }
+
+    public RestaurantTable(Long id, int size, int currentlyAtTheTable, List<OrderedProduct> orderedProducts, TableState tableState) {
         this.id = id;
         this.size = size;
-        this.currently_at_the_table = currently_at_the_table;
+        this.currentlyAtTheTable = currentlyAtTheTable;
         this.orderedProducts = orderedProducts;
         this.tableState = tableState;
     }

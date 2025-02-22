@@ -1,8 +1,7 @@
 package org.example.restaurant.service;
 
 import jakarta.transaction.Transactional;
-import org.example.restaurant.exceptions.IsAlreadyOpen;
-import org.example.restaurant.exceptions.IsNotPaid;
+import org.example.restaurant.exceptions.*;
 import org.example.restaurant.model.OrderedProduct;
 import org.example.restaurant.model.RestaurantTable;
 import org.example.restaurant.model.TableState;
@@ -19,22 +18,20 @@ public class TableService{
         this.tableRepository = tableRepository;
     }
 
-    // Create
     @Transactional
     public RestaurantTable createTable(RestaurantTable table) {
         return tableRepository.save(table);
     }
 
-    // Read
     public RestaurantTable getTableById(Long tableId){
-        return tableRepository.findById(tableId).orElseThrow(() -> new RuntimeException("Table not found"));
+        return tableRepository.findById(tableId)
+                .orElseThrow(() -> new RestaurantTableNotFoundException(tableId));
     }
 
     public List<RestaurantTable> getAllTables(){
         return tableRepository.findAll();
     }
 
-    // Update
     public RestaurantTable updateSizeTable(Long tableId, int newSize){
         RestaurantTable table = getTableById(tableId);
         table.setSize(newSize);
@@ -43,18 +40,19 @@ public class TableService{
 
     public RestaurantTable updateCurrentSizeTable(Long tableId, int people){
         RestaurantTable table = getTableById(tableId);
-        table.setCurrently_at_the_table(people);
+        table.setCurrentlyAtTheTable(people);
         return tableRepository.save(table);
     }
 
-    public RestaurantTable updateTableState(Long tableId, String tableState){
-        if(!isValidTableState(tableState)){
-            throw new IllegalArgumentException("Invalid table state: " + tableState);
+    public RestaurantTable updateTableState(Long tableId, String tableState) {
+        if (!isValidTableState(tableState)) {
+            throw new InvalidTableStateException(tableState);
         }
         RestaurantTable table = getTableById(tableId);
         table.setTableState(TableState.valueOf(tableState.toUpperCase()));
         return tableRepository.save(table);
     }
+
 
     public RestaurantTable addProduct(Long tableId, OrderedProduct product){
         RestaurantTable table = getTableById(tableId);
@@ -65,7 +63,7 @@ public class TableService{
     public RestaurantTable deleteProduct(Long tableId, OrderedProduct product){
         RestaurantTable table = getTableById(tableId);
         if (!table.getOrderedProducts().remove(product)) {
-            throw new IllegalArgumentException("Product not found in table order");
+            throw new ProductIsNotOrderedException(product.toString());
         }
         return tableRepository.save(table);
     }
@@ -73,7 +71,7 @@ public class TableService{
     public RestaurantTable closeTable(Long tableId){
         RestaurantTable table = getTableById(tableId);
         if(table.getTableState() != TableState.PAID){
-            throw new IsNotPaid("Table is not paid");
+            throw new IsNotPaidException(tableId);
         }
         table.setTableState(TableState.FREE);
         return tableRepository.save(table);
@@ -82,7 +80,7 @@ public class TableService{
     public RestaurantTable openTable(Long tableId) {
         RestaurantTable table = getTableById(tableId);
         if(table.getTableState() == TableState.FREE){
-            throw new IsAlreadyOpen("Table is already open");
+            throw new IsAlreadyOpenException("Table is already open");
         }
         table.setTableState(TableState.TAKEN);
         return tableRepository.save(table);
