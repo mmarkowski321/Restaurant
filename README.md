@@ -23,5 +23,6 @@ This project is a **REST API** for managing restaurant table lifecycle, built us
 ---
 
 ### 1️⃣ **Clone the repository**
+''bash
 git clone https://github.com/mmarkowski321/Restaurant
 cd restaurant-table-management
